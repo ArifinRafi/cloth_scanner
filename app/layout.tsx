@@ -4,20 +4,27 @@ import './globals.css';
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] });
 const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] });
+const siteUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? new URL(`https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`)
+  : new URL('http://localhost:3000');
 
 export const metadata: Metadata = {
-  title: 'WeaveScan | AI Cloth Scanner for RMG Industries',
+  metadataBase: siteUrl,
+  applicationName: 'Cloth Scanner',
+  title: 'Cloth Scanner | AI Cut Panel Inspection for RMG Industries',
   description: 'Meet the AI-based cut panel inspection robot for RMG industries. Precision handling, dual-view imaging, and intelligent cloth inspection.',
   openGraph: {
-    title: 'WeaveScan | AI Cloth Scanner for RMG Industries',
+    type: 'website',
+    siteName: 'Cloth Scanner',
+    title: 'Cloth Scanner | AI Cut Panel Inspection for RMG Industries',
     description: 'Precision handling, dual-view imaging, and intelligent cloth inspection for RMG industries.',
-    images: ['/og.png'],
+    images: [{ url: '/og.png?v=cloth-scanner', width: 1200, height: 630, alt: 'Cloth Scanner — from fabric to verified quality' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'WeaveScan | AI Cloth Scanner for RMG Industries',
+    title: 'Cloth Scanner | AI Cut Panel Inspection for RMG Industries',
     description: 'Precision handling, dual-view imaging, and intelligent cloth inspection for RMG industries.',
-    images: ['/og.png'],
+    images: ['/og.png?v=cloth-scanner'],
   },
 };
 

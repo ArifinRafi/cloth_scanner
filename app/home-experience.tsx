@@ -28,7 +28,7 @@ export default function HomeExperience() {
   const [theme, setTheme] = useState<Theme>('dark');
 
   useEffect(() => {
-    const savedTheme = window.localStorage.getItem('weavescan-theme');
+    const savedTheme = window.localStorage.getItem('cloth-scanner-theme');
     if (savedTheme === 'light' || savedTheme === 'dark') {
       setTheme(savedTheme);
       return;
@@ -38,7 +38,7 @@ export default function HomeExperience() {
   const toggleTheme = () => {
     setTheme(current => {
       const next = current === 'light' ? 'dark' : 'light';
-      window.localStorage.setItem('weavescan-theme', next);
+      window.localStorage.setItem('cloth-scanner-theme', next);
       return next;
     });
   };
