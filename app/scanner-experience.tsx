@@ -14,6 +14,9 @@ import { Html, useGLTF } from '@react-three/drei';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import * as THREE from 'three';
+import Link from 'next/link';
+import { applyMachineFinish } from './machine-materials';
+import MachineLighting from './machine-lighting';
 
 const MODEL_PATH = '/models/scanning-table-v2.glb';
 const CLOTH_ORIGIN = new THREE.Vector3(2.24255, 0.7514, 0.009);
@@ -111,7 +114,7 @@ function clothMotion(progress: number): Motion {
   }
   if (progress < 0.96) {
     const t = between(progress, 0.9, 0.96);
-    return { x: mix(glass.x, outputAir.x, t), y: glass.y, z: mix(0.17, outputAir.z, Math.sin(t * Math.PI)) };
+    return { x: mix(glass.x, outputAir.x, t), y: glass.y, z: mix(0.17, outputAir.z, t) + 0.025 * Math.sin(t * Math.PI) };
   }
   const t = between(progress, 0.96, 1);
   return { x: output.x, y: output.y, z: mix(outputAir.z, output.z, t) };
@@ -137,14 +140,60 @@ function SceneLoading() {
   return <Html center className="model-loading"><span />Loading scanner</Html>;
 }
 
+function fabricWeave() {
+  const size = 128;
+  const data = new Uint8Array(size * size * 4);
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const warp = Math.sin(x * Math.PI / 4);
+      const weft = Math.sin(y * Math.PI / 4);
+      const value = Math.round(128 + 45 * warp * weft + 18 * (warp + weft));
+      const i = (y * size + x) * 4;
+      data[i] = data[i + 1] = data[i + 2] = value;
+      data[i + 3] = 255;
+    }
+  }
+  const texture = new THREE.DataTexture(data, size, size, THREE.RGBAFormat);
+  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(20, 20);
+  texture.magFilter = THREE.LinearFilter;
+  texture.minFilter = THREE.LinearMipmapLinearFilter;
+  texture.generateMipmaps = true;
+  texture.needsUpdate = true;
+  return texture;
+}
+
 function FabricSheet({ progressRef }: { progressRef: ProgressRef }) {
   const group = useRef<THREE.Group>(null);
   const mesh = useRef<THREE.Mesh<THREE.PlaneGeometry>>(null);
   const basePositions = useRef<Float32Array | null>(null);
+  const previousProgress = useRef(-1);
+  const weave = useMemo(fabricWeave, []);
+  const border = useMemo(() => {
+    const segments = 64;
+    const stride = segments + 1;
+    const vertices: number[] = [];
+    for (let i = 0; i < segments; i++) vertices.push(i);
+    for (let i = 0; i < segments; i++) vertices.push(i * stride + segments);
+    for (let i = segments; i > 0; i--) vertices.push(segments * stride + i);
+    for (let i = segments; i > 0; i--) vertices.push(i * stride);
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(new Float32Array(vertices.length * 6), 3));
+    const indices: number[] = [];
+    for (let i = 0; i < vertices.length; i++) {
+      const next = (i + 1) % vertices.length;
+      indices.push(i * 2, next * 2, i * 2 + 1, next * 2, next * 2 + 1, i * 2 + 1);
+    }
+    geometry.setIndex(indices);
+    return { geometry, vertices };
+  }, []);
 
   useFrame(() => {
     if (!group.current || !mesh.current) return;
     const progress = progressRef.current;
+    // Shape follows scroll position only, including reverse scrolling and pauses.
+    if (progress === previousProgress.current) return;
+    previousProgress.current = progress;
     const motion = clothMotion(progress);
     group.current.position.set(
       CLOTH_ORIGIN.x + motion.x,
@@ -153,29 +202,60 @@ function FabricSheet({ progressRef }: { progressRef: ProgressRef }) {
     );
 
     const airborne = clamp01(between(progress, 0.29, 0.35) - between(progress, 0.51, 0.58) + between(progress, 0.86, 0.91) - between(progress, 0.96, 1));
-    group.current.rotation.z = Math.sin(progress * Math.PI * 5) * 0.012 * airborne;
     const geometry = mesh.current.geometry;
     const position = geometry.attributes.position as THREE.BufferAttribute;
     if (!basePositions.current) basePositions.current = Float32Array.from(position.array);
     const original = basePositions.current;
-    const time = progress * 18;
+    const travel = between(progress, .37, .51) + between(progress, .9, .96);
+    const phase = progress * 32;
     for (let i = 0; i < position.count; i += 1) {
       const x = original[i * 3];
       const y = original[i * 3 + 1];
       const nx = Math.abs(x) / 0.462;
       const ny = Math.abs(y) / 0.462;
       const centerSag = Math.max(0, (1 - nx * nx) * (1 - ny * ny));
-      const ripple = Math.sin(x * 20 + time * 1.4) * Math.sin(y * 17 - time) * 0.0025;
-      position.setZ(i, (-0.028 * centerSag + ripple) * airborne);
+      // Four edge-midpoint grips stay stable while the unsupported cloth drapes.
+      const gripDistance = Math.min((Math.abs(x) - .462) ** 2 + y * y, x * x + (Math.abs(y) - .462) ** 2);
+      const free = 1 - Math.exp(-gripDistance / .0045);
+      const edge = Math.max(nx, ny) ** 8;
+      const corner = (nx * ny) ** 2;
+      const sag = -(0.052 * centerSag + .024 * corner) * airborne;
+      const foldLine = y - .32 * x - .08;
+      const fold = Math.exp(-(foldLine * foldLine) / .0012) * (.0015 + .006 * airborne);
+      const ripple = Math.sin(x * 24 + phase) * Math.sin(y * 19 - phase * .65) * .005 * airborne;
+      const edgeCurl = edge * (.001 + .002 * (1 + Math.sin(x * 41 + y * 37)) + .007 * airborne * Math.sin(x * 18 - y * 23 + phase));
+      const wrinkles = (.0005 + .0012 * airborne) * (1 + Math.sin(x * 39 + y * 16)) * (1 + Math.sin(y * 31 - x * 12)) * .5;
+      const sway = Math.sin(travel * Math.PI * 4) * .007 * airborne;
+      const edgeX = Math.sign(x) * nx ** 12 * Math.sin(y * 89 + .8) * .0015;
+      const edgeY = Math.sign(y) * ny ** 12 * Math.sin(x * 83 - .4) * .0015;
+      position.setXYZ(i,
+        x + free * (edgeX - x * .01 * airborne * centerSag + sway * centerSag),
+        y + free * (edgeY - y * .008 * airborne * centerSag),
+        free * (sag + fold + ripple + edgeCurl + wrinkles),
+      );
     }
     position.needsUpdate = true;
+    // Updated normals let the existing lights reveal folds rather than a flat slab.
+    geometry.computeVertexNormals();
+    geometry.computeBoundingSphere();
+    const rim = border.geometry.getAttribute('position') as THREE.BufferAttribute;
+    border.vertices.forEach((vertex, index) => {
+      rim.setXYZ(index * 2, position.getX(vertex), position.getY(vertex), position.getZ(vertex));
+      rim.setXYZ(index * 2 + 1, position.getX(vertex), position.getY(vertex), position.getZ(vertex) - .0007);
+    });
+    rim.needsUpdate = true;
+    border.geometry.computeVertexNormals();
+    border.geometry.computeBoundingSphere();
   });
 
   return (
     <group ref={group} position={CLOTH_ORIGIN}>
       <mesh ref={mesh} castShadow receiveShadow>
-        <planeGeometry args={[0.924, 0.924, 40, 40]} />
-        <meshStandardMaterial color="#a8495f" roughness={0.92} metalness={0} side={THREE.DoubleSide} />
+        <planeGeometry args={[0.924, 0.924, 64, 64]} />
+        <meshPhysicalMaterial color="#327f6d" roughness={0.95} metalness={0} side={THREE.DoubleSide} bumpMap={weave} bumpScale={.0003} sheen={.25} sheenColor="#327f6d" sheenRoughness={.95} />
+      </mesh>
+      <mesh geometry={border.geometry} castShadow receiveShadow>
+        <meshStandardMaterial color="#327f6d" roughness={.95} metalness={0} side={THREE.DoubleSide} />
       </mesh>
     </group>
   );
@@ -208,15 +288,22 @@ function ScannerModel({ progressRef }: { progressRef: ProgressRef }) {
       child.material = Array.isArray(child.material) ? materials : materials[0];
 
       for (const material of materials) {
+        applyMachineFinish(material, child.name);
+        if (/ClothCut/.test(child.name) && material instanceof THREE.MeshStandardMaterial) {
+          material.color.set('#327f6d');
+          material.roughness = .95;
+          material.metalness = 0;
+        }
         if (material.name === 'Glass_(Clear)') {
           child.material = new THREE.MeshPhysicalMaterial({
             name: material.name,
-            color: '#c8f6ed',
-            transmission: 0.88,
+            color: '#c0ece2',
+            transmission: 0,
             transparent: true,
-            opacity: 0.3,
-            roughness: 0.06,
-            metalness: 0,
+            opacity: 0.22,
+            depthWrite: false,
+            roughness: 0.12,
+            metalness: 0.15,
             thickness: 0.018,
             ior: 1.47,
           });
@@ -224,8 +311,8 @@ function ScannerModel({ progressRef }: { progressRef: ProgressRef }) {
         if (/LED_RingLight/.test(child.name)) {
           const led = new THREE.MeshStandardMaterial({
             name: 'Inspection_LED',
-            color: '#caffee',
-            emissive: '#a8ffe2',
+            color: '#f4f7fa',
+            emissive: '#edf5ff',
             emissiveIntensity: 0.12,
             roughness: 0.25,
             metalness: 0.05,
@@ -331,21 +418,22 @@ function sampleCamera(progress: number) {
 }
 
 function CameraRig({ progressRef }: { progressRef: ProgressRef }) {
-  const { camera, pointer, size } = useThree();
+  const { camera, size } = useThree();
+  // Keep a stable target object across frames and hot reloads. Copying into it
+  // preserves the direct, no-lag camera motion without changing hook order.
   const target = useRef(new THREE.Vector3(1.4, 0.05, -0.7));
 
-  useFrame((_, delta) => {
+  useFrame(() => {
     const frame = sampleCamera(progressRef.current);
     if (size.width < 820) {
       const away = frame.position.clone().sub(frame.target).multiplyScalar(1.28);
       frame.position.copy(frame.target).add(away);
       frame.position.y += 0.32;
     }
-    frame.position.x += pointer.x * 0.12;
-    frame.position.y += pointer.y * 0.06;
-    const damping = 1 - Math.exp(-delta * 4.2);
-    camera.position.lerp(frame.position, damping);
-    target.current.lerp(frame.target, damping);
+    // The shared scroll playhead is already smoothed. A second camera filter
+    // would lag behind the cloth, and pointer parallax adds unrelated movement.
+    camera.position.copy(frame.position);
+    target.current.copy(frame.target);
     camera.lookAt(target.current);
   });
   return null;
@@ -363,34 +451,31 @@ function InspectionLights({ progressRef }: { progressRef: ProgressRef }) {
 
   return (
     <>
-      <pointLight ref={top} color="#dffff5" distance={2.4} decay={2} position={[0.716, 0.88, -0.742]} intensity={0} />
-      <pointLight ref={bottom} color="#a7ffdc" distance={2.1} decay={2} position={[0.743, -0.5, -0.729]} intensity={0} />
+      <pointLight ref={top} color="#fff9f0" distance={2.4} decay={2} position={[0.716, 0.88, -0.742]} intensity={0} />
+      <pointLight ref={bottom} color="#edf5ff" distance={2.1} decay={2} position={[0.743, -0.5, -0.729]} intensity={0} />
     </>
   );
 }
 
-function ScannerStage({ progressRef }: { progressRef: ProgressRef }) {
+function ScannerStage({ progressRef, active }: { progressRef: ProgressRef; active: boolean }) {
   return (
     <Canvas
       dpr={[1, 1.65]}
       shadows
+      frameloop={active ? 'always' : 'never'}
       camera={{ position: [4.25, 2.28, 3.65], fov: 32, near: 0.01, far: 30 }}
       gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
       fallback={<div className="webgl-fallback">3D preview requires WebGL.</div>}
     >
-      <color attach="background" args={['#07100f']} />
-      <fog attach="fog" args={['#07100f', 5.2, 9]} />
-      <hemisphereLight args={['#d8fff2', '#020806', 1.15]} />
-      <directionalLight castShadow color="#dcfff4" intensity={2.9} position={[3.8, 5.2, 2.8]} shadow-mapSize={[1024, 1024]} shadow-bias={-0.0002} />
-      <spotLight color="#3dd6a1" intensity={7} position={[-1, 3, 2]} angle={0.42} penumbra={0.9} distance={8} />
+      <MachineLighting theme="dark" />
       <Suspense fallback={<SceneLoading />}>
         <ScannerModel progressRef={progressRef} />
       </Suspense>
       <InspectionLights progressRef={progressRef} />
       <CameraRig progressRef={progressRef} />
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[1.4, -0.87, -0.7]} receiveShadow>
-        <planeGeometry args={[7, 6]} />
-        <shadowMaterial transparent opacity={0.34} />
+        <planeGeometry args={[30, 30]} />
+        <shadowMaterial opacity={.5} transparent />
       </mesh>
     </Canvas>
   );
@@ -405,12 +490,30 @@ function ResultMark() {
   );
 }
 
-export default function ScannerExperience() {
+export default function ScannerExperience({ embedded = false }: { embedded?: boolean }) {
   const journeyRef = useRef<HTMLElement>(null);
   const shellRef = useRef<HTMLElement>(null);
   const progressRef = useRef(0);
   const [activeStep, setActiveStep] = useState(0);
   const activeStepRef = useRef(0);
+  const sceneRef = useRef<HTMLDivElement>(null);
+  const [sceneActive, setSceneActive] = useState(!embedded);
+  const [sceneLoaded, setSceneLoaded] = useState(!embedded);
+  const Shell = embedded ? 'section' : 'main';
+  const Title = embedded ? 'h2' : 'h1';
+  const journeyId = embedded ? 'robot-cycle' : 'top';
+  const titleId = embedded ? 'robot-title' : 'page-title';
+
+  useEffect(() => {
+    const element = sceneRef.current;
+    if (!element) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      setSceneActive(entry.isIntersecting);
+      if (entry.isIntersecting) setSceneLoaded(true);
+    }, { rootMargin: '200px' });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
 
   useLayoutEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -447,13 +550,14 @@ export default function ScannerExperience() {
         trigger: journey,
         start: 'top top',
         end: 'bottom bottom',
-        scrub: reducedMotion ? 0.01 : 0.75,
-        onUpdate: (self) => updateVisuals(self.progress),
+        scrub: reducedMotion ? true : 0.9,
       },
+      // One writer for the entire scene: raw ScrollTrigger progress would
+      // fight the scrubbed value and make the model jump on every wheel event.
       onUpdate: () => updateVisuals(playhead.value),
     });
 
-    updateVisuals(0);
+    updateVisuals(playhead.value);
     return () => {
       tween.scrollTrigger?.kill();
       tween.kill();
@@ -463,32 +567,32 @@ export default function ScannerExperience() {
   const step = steps[activeStep];
 
   return (
-    <main ref={shellRef} className="experience-shell">
-      <header className="site-header">
-        <a href="#top" className="brand" aria-label="WeaveScan home">
+    <Shell ref={shellRef} className={`experience-shell${embedded ? ' robot-embedded' : ''}`} id={embedded ? 'how-the-robot-works' : undefined} aria-labelledby={embedded ? titleId : undefined}>
+      {!embedded && <header className="site-header">
+        <Link href="/" className="brand" aria-label="Cloth Scanner home">
           <span className="brand-icon" aria-hidden="true"><i /><i /><i /></span>
-          <span>WEAVESCAN</span>
-        </a>
+          <span>CLOTH SCANNER</span>
+        </Link>
         <nav aria-label="Primary navigation">
-          <a href="#overview">Overview</a>
+          <Link href="/">Overview</Link>
           <a href="#top" className="active" aria-current="page">How it works</a>
           <a href="#specifications">Specifications</a>
         </nav>
         <span className="system-state"><i /> {activeStep >= 6 ? 'Quality verified' : 'System ready'}</span>
-      </header>
+      </header>}
 
-      <section ref={journeyRef} id="top" className="scroll-journey" aria-labelledby="page-title">
+      <section ref={journeyRef} id={journeyId} className="scroll-journey" aria-labelledby={titleId}>
         <div className="sticky-stage">
-          <div className="scene-layer" aria-label="Interactive 3D cloth scanner animation">
-            <ScannerStage progressRef={progressRef} />
+          <div ref={sceneRef} className="scene-layer" aria-label="Interactive 3D cloth scanner animation">
+            {sceneLoaded && <ScannerStage progressRef={progressRef} active={sceneActive} />}
           </div>
           <div className="scene-vignette" aria-hidden="true" />
           <div className="grid-overlay" aria-hidden="true" />
           <div className="flash-layer" aria-hidden="true" />
 
           <div className="intro-copy">
-            <p className="eyebrow"><span>01</span> Automated inspection</p>
-            <h1 id="page-title">From fabric to<br /><em>verified quality.</em></h1>
+            <p className="eyebrow"><span>{embedded ? '04' : '01'}</span> {embedded ? 'How the robot works' : 'Automated inspection'}</p>
+            <Title id={titleId} className="robot-heading">From fabric to<br /><em>verified quality.</em></Title>
             <p className="lede">Scroll through one complete scan cycle—from four-point pickup to an accepted result.</p>
           </div>
 
@@ -530,13 +634,13 @@ export default function ScannerExperience() {
         </div>
       </section>
 
-      <section id="specifications" className="completion-panel">
+      <section id={embedded ? 'robot-cycle-complete' : 'specifications'} className="completion-panel">
         <p className="eyebrow"><span>✓</span> Cycle complete</p>
         <h2>Handled. Scanned.<br /><em>Verified.</em></h2>
         <p>Four-point handling keeps every cut controlled while dual-view imaging makes quality decisions visible and repeatable.</p>
-        <a href="#top">Replay the process <span>↑</span></a>
+        <a href={`#${journeyId}`}>Replay the process <span>↑</span></a>
       </section>
-    </main>
+    </Shell>
   );
 }
 

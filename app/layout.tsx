@@ -6,17 +6,17 @@ const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] });
 const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'How It Works | WeaveScan',
-  description: 'Follow an automated cloth inspection cycle from pickup to accepted quality.',
+  title: 'WeaveScan | AI Cloth Scanner for RMG Industries',
+  description: 'Meet the AI-based cut panel inspection robot for RMG industries. Precision handling, dual-view imaging, and intelligent cloth inspection.',
   openGraph: {
-    title: 'How It Works | WeaveScan',
-    description: 'Follow an automated cloth inspection cycle from pickup to accepted quality.',
+    title: 'WeaveScan | AI Cloth Scanner for RMG Industries',
+    description: 'Precision handling, dual-view imaging, and intelligent cloth inspection for RMG industries.',
     images: ['/og.png'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'How It Works | WeaveScan',
-    description: 'Follow an automated cloth inspection cycle from pickup to accepted quality.',
+    title: 'WeaveScan | AI Cloth Scanner for RMG Industries',
+    description: 'Precision handling, dual-view imaging, and intelligent cloth inspection for RMG industries.',
     images: ['/og.png'],
   },
 };
