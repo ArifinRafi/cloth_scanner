@@ -60,19 +60,19 @@ export default function ReferenceContent() {
     <h2 className="problem-head">Manual inspection has a blind spot.<br />What it misses kills your margin.</h2>
     <div className="problem-grid">
       <article className="prob-card">
-        <div className="prob-photo"><img src="/design-reference/2033d0bfb6f1.jpg" alt="Garment finishing quality inspection" decoding="async" loading="lazy" /></div>
-        <h3 className="serif-teal">Rising Payroll Overhead</h3>
-        <p>Every new cutting table needs more inspection capacity. That means more headcount tied up in checking panels.</p>
+        <div className="prob-photo"><img src="/design-reference/manual-panel-checking.jpg" alt="Workers manually checking and tagging stacks of cut garment panels" decoding="async" loading="lazy" /></div>
+        <h3 className="serif-teal">Every Panel, Checked by Hand</h3>
+        <p>Operators inspect, handle, and mark cut panels one stack at a time. Quality depends on sustained attention across a repetitive shift.</p>
       </article>
       <article className="prob-card">
-        <div className="prob-photo"><img src="/design-reference/a0d4f34315d1.jpg" alt="Garment production line" decoding="async" loading="lazy" /></div>
-        <h3 className="serif-teal">The Cost Compounds</h3>
-        <p>A cheap defect at cutting gets expensive downstream. Rework, delays, and shipment risk all start with what was missed early.</p>
+        <div className="prob-photo"><img src="/design-reference/manual-ok-goods.jpg" alt="Manually approved garment panels waiting at an OK Goods sorting station" decoding="async" loading="lazy" /></div>
+        <h3 className="serif-teal">Sorting Relies on Manual Decisions</h3>
+        <p>Accepted panels are separated and labelled by people. One inconsistent decision can send a defective panel farther into production.</p>
       </article>
       <article className="prob-card">
-        <div className="prob-photo"><img src="/design-reference/91aa5af13339.jpg" alt="Manual fabric inspection" decoding="async" loading="lazy" /></div>
-        <h3 className="serif-teal">Shift Fatigue is Real</h3>
-        <p>Manual inspection gets harder to sustain across a full shift. Missed defects move down the line&mdash;and become harder to fix.</p>
+        <div className="prob-photo"><img src="/design-reference/garment-production-floor.jpg" alt="Large ready-made garment production floor with many sewing lines and operators" decoding="async" loading="lazy" /></div>
+        <h3 className="serif-teal">The Burden Grows with Every Line</h3>
+        <p>At factory scale, thousands of panels move between teams every hour. More output demands more inspection capacity and coordination.</p>
       </article>
     </div>
   </div>

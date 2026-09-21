@@ -33,6 +33,19 @@ if (worksStart < 0 || specsStart < worksStart) throw new Error('Reference animat
 body = body.slice(0, worksStart) + '    <SortingScroll />\n\n' + body.slice(specsStart);
 // Keep the product name already finalized for this app, also used by the linked reference.
 body = body.replaceAll('ClothScannerAI', 'Cloth Scanner');
+body = body
+  .replace('/design-reference/2033d0bfb6f1.jpg', '/design-reference/manual-panel-checking.jpg')
+  .replace('Garment finishing quality inspection', 'Workers manually checking and tagging stacks of cut garment panels')
+  .replace('Rising Payroll Overhead', 'Every Panel, Checked by Hand')
+  .replace('Every new cutting table needs more inspection capacity. That means more headcount tied up in checking panels.', 'Operators inspect, handle, and mark cut panels one stack at a time. Quality depends on sustained attention across a repetitive shift.')
+  .replace('/design-reference/a0d4f34315d1.jpg', '/design-reference/manual-ok-goods.jpg')
+  .replace('Garment production line', 'Manually approved garment panels waiting at an OK Goods sorting station')
+  .replace('The Cost Compounds', 'Sorting Relies on Manual Decisions')
+  .replace('A cheap defect at cutting gets expensive downstream. Rework, delays, and shipment risk all start with what was missed early.', 'Accepted panels are separated and labelled by people. One inconsistent decision can send a defective panel farther into production.')
+  .replace('/design-reference/91aa5af13339.jpg', '/design-reference/garment-production-floor.jpg')
+  .replace('Manual fabric inspection', 'Large ready-made garment production floor with many sewing lines and operators')
+  .replace('Shift Fatigue is Real', 'The Burden Grows with Every Line')
+  .replace('Manual inspection gets harder to sustain across a full shift. Missed defects move down the line&mdash;and become harder to fix.', 'At factory scale, thousands of panels move between teams every hour. More output demands more inspection capacity and coordination.');
 // The linked reference updates the old raster wordmark to the finalized name.
 body = body.replace(/<a class="brand" href="#top"><img[^>]*\/><\/a>/,
   '<a class="brand" href="#top"><img src="/design-reference/logo-icon.png" alt="" /><span class="brand-word">Cloth Scanner</span></a>')
