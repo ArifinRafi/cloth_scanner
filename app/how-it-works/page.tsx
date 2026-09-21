@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import { ClientOnly } from '../client';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = { title: 'How It Works | Cloth Scanner' };
 
 export default function HowItWorks() {
-  return <ClientOnly />;
+  redirect('/#works');
 }

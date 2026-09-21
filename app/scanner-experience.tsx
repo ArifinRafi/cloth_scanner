@@ -168,7 +168,7 @@ function FabricSheet({ progressRef }: { progressRef: ProgressRef }) {
   const mesh = useRef<THREE.Mesh<THREE.PlaneGeometry>>(null);
   const basePositions = useRef<Float32Array | null>(null);
   const previousProgress = useRef(-1);
-  const weave = useMemo(fabricWeave, []);
+  const weave = useMemo(() => fabricWeave(), []);
   const border = useMemo(() => {
     const segments = 64;
     const stride = segments + 1;
@@ -261,7 +261,7 @@ function FabricSheet({ progressRef }: { progressRef: ProgressRef }) {
   );
 }
 
-function ScannerModel({ progressRef }: { progressRef: ProgressRef }) {
+export function ScannerModel({ progressRef }: { progressRef: ProgressRef }) {
   const gltf = useGLTF(MODEL_PATH);
   const prepared = useMemo(() => {
     const model = gltf.scene.clone(true);
@@ -400,7 +400,7 @@ const cameraFrames = [
   { at: 1, position: new THREE.Vector3(3.05, 1.7, 1.55), target: new THREE.Vector3(0.52, 0.04, -0.69) },
 ];
 
-function sampleCamera(progress: number) {
+export function sampleCamera(progress: number) {
   let from = cameraFrames[0];
   let to = cameraFrames[cameraFrames.length - 1];
   for (let i = 0; i < cameraFrames.length - 1; i += 1) {
@@ -439,7 +439,7 @@ function CameraRig({ progressRef }: { progressRef: ProgressRef }) {
   return null;
 }
 
-function InspectionLights({ progressRef }: { progressRef: ProgressRef }) {
+export function InspectionLights({ progressRef }: { progressRef: ProgressRef }) {
   const top = useRef<THREE.PointLight>(null);
   const bottom = useRef<THREE.PointLight>(null);
 

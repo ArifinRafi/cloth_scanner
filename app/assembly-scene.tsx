@@ -224,9 +224,9 @@ class SceneBoundary extends Component<{ children: ReactNode }, { failed: boolean
   }
 }
 
-export default function AssemblyScene({ progress, theme }: { progress: Progress; theme: 'light' | 'dark' }) {
+export default function AssemblyScene({ progress, theme, active = true }: { progress: Progress; theme: 'light' | 'dark'; active?: boolean }) {
   const dark = theme === 'dark';
-  return <SceneBoundary><Canvas shadows dpr={[1, 1.5]} camera={{ position: [4, 4, 8], fov: 32, near: .1, far: 50 }} gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }} fallback={<div className="assembly-loading">Enable WebGL to explore the 3D robot.</div>}>
+  return <SceneBoundary><Canvas frameloop={active ? 'always' : 'never'} shadows dpr={[1, 1.5]} camera={{ position: [4, 4, 8], fov: 32, near: .1, far: 50 }} gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }} fallback={<div className="assembly-loading">Enable WebGL to explore the 3D robot.</div>}>
     <MachineLighting theme={theme} />
     <Suspense fallback={<Html center><div className="assembly-loading">Loading scanner<span /></div></Html>}>
       <AssemblyModel progress={progress} />

@@ -1,5 +1,5 @@
-import HomeExperience from './home-experience';
+import ReferenceContent from './reference-content';
 
 export default function Home() {
-  return <HomeExperience />;
+  return <ReferenceContent />;
 }

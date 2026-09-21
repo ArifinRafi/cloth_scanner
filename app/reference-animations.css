@@ -1,0 +1,51 @@
+/* Only the two requested image replacements and non-visual usability fixes. */
+.reference-site { --font-geist-mono: ui-monospace, monospace; --home-muted: #9aa4a1; --home-green: #007977; --home-line: #334442; }
+.brand { display: flex; align-items: center; gap: 9px; }
+.brand img { height: 25px; width: auto; }
+.brand-word { font-size: 19px; font-weight: 700; letter-spacing: -.01em; color: #fff; white-space: nowrap; }
+.hero-machine-animated { width: 72%; height: 700px; right: -19%; top: 0; max-width: none; opacity: 1; mask-image: linear-gradient(90deg, transparent, #000 20%); }
+.hero-machine-animated canvas, .works-machine-animated canvas { touch-action: pan-y; }
+.hero-inner { pointer-events: none; }
+.hero-inner a { pointer-events: auto; }
+.works-stage-animated { height: min(740px, 100svh); min-height: 600px; background: var(--gray); }
+.works-machine-animated { width: 68%; max-width: none; left: -8%; height: 100%; }
+.works-stage-animated .works-side { top: 150px; }
+.reference-scene-loading, .assembly-loading { position: absolute; inset: 0; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 12px; font-size: 14px; color: #78938a; text-align: center; }
+.reference-scene-loading-label { white-space: nowrap; font-size: 14px; color: #5c6a66; }
+.reference-scene-loading button, .assembly-loading button { cursor: pointer; color: inherit; background: transparent; border: 1px solid currentColor; border-radius: 8px; padding: 10px 16px; }
+.skip-animation { display: inline-flex; align-items: center; gap: 8px; margin-top: 20px; color: #5c6a66; font-size: 13px; }
+.skip-animation:hover { color: var(--teal); }
+.sort-accepted { display: flex; align-items: center; gap: 9px; margin-top: 16px; font-size: 18px; font-weight: 700; }
+.sort-accepted svg { width: 27px; height: 27px; }
+.sort-accepted circle { fill: #43e08a; }
+.sort-accepted path { fill: none; stroke: #003f39; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+:focus-visible { outline: 3px solid #18b7a3; outline-offset: 5px; }
+.insp-seg button:focus-visible { outline-offset: 1px; }
+@media (max-width: 960px) {
+  .hero-machine-animated { width: 100%; height: 570px; right: -30%; top: 40px; opacity: .5; }
+  .works-stage-animated { height: min(790px, 100svh); min-height: 600px; display: flex; flex-direction: column; }
+  .works-machine-animated { position: relative; width: 100%; height: 65%; flex: 1; min-height: 320px; left: 0; top: 0; margin: 0; }
+  .works-stage-animated .works-side { position: relative; top: auto; right: auto; width: 100%; padding: 0 0 20px; }
+  .works-stage-animated .scroll-hint { margin-bottom: 12px; }
+  .works-stage-animated .step-card { min-height: 125px; }
+  .works-stage-animated .skip-animation { margin-top: 12px; }
+  .nav-cta { margin-left: auto; }
+  .footer-bottom { gap: 20px; flex-wrap: wrap; }
+}
+@media (max-width: 520px) {
+  .brand img { height: 21px; }
+  .nav-cta { padding: 11px 12px; font-size: 12px; }
+  .hero-machine-animated { top: 235px; right: -26%; height: 450px; width: 115%; opacity: .6; }
+  .hero-title { font-size: 34px; }
+  .hero-sub br { display: none; }
+  .hero-actions { margin-bottom: 190px; }
+  .hero-stats { margin-top: 65px; }
+  .step-title { font-size: 17px; }
+  .step-desc { font-size: 14px; }
+  .works-stage-animated .scroll-hint { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .works-stage-animated { height: 660px; }
+}
