@@ -31,25 +31,19 @@ export default function ReferenceContent() {
     <div className="hero-actions">
       <a href="#contact" className="btn btn-teal">Talk to Our Team</a>
       <a href="#works" className="btn btn-outline">Explore Interactive 3D</a>
-    </div>
-    <div className="hero-accuracy">
-      <svg className="spark" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 0c.6 5.7 5.7 10.8 12 12-6.3 1.2-11.4 6.3-12 12-.6-5.7-5.7-10.8-12-12C6.3 10.8 11.4 5.7 12 0z" /></svg>
-      <span className="acc-num">99.2%</span>
-      <span className="acc-label">inspection accuracy</span>
-    </div>
-  </div>
+    </div></div>
   <div className="container hero-stats">
     <div className="stat">
-      <div className="stat-num">~$10.53M</div>
-      <div className="stat-label">Saved every year, per factory.</div>
+      <div className="stat-num">1 in 3</div>
+      <div className="stat-label">Shipments fail the buyer&apos;s AQL check at today&apos;s defect rate.</div>
     </div>
     <div className="stat">
-      <div className="stat-num">&lt;3s</div>
-      <div className="stat-label">Grades each panel before the next one arrives.</div>
+      <div className="stat-num">3 <span className="stat-unit">SEC</span></div>
+      <div className="stat-label">Under three seconds to grade a panel, front and back.</div>
     </div>
     <div className="stat">
-      <div className="stat-num">5 &rarr; 0.5</div>
-      <div className="stat-label">Inspectors per table. Redeployed, not replaced.</div>
+      <div className="stat-num">4 <span className="stat-arrow">➜</span> 0.5</div>
+      <div className="stat-label">Inspectors per table, once the cell is running.</div>
     </div>
   </div>
 </section>

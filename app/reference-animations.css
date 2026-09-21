@@ -1,5 +1,7 @@
 /* Only the two requested image replacements and non-visual usability fixes. */
 .reference-site { --font-geist-mono: ui-monospace, monospace; --home-muted: #9aa4a1; --home-green: #007977; --home-line: #334442; }
+.stat-unit { font-size: .38em; letter-spacing: .14em; vertical-align: .18em; }
+.stat-arrow { font-size: .62em; color: #4fe0c4; vertical-align: .08em; }
 .brand { display: flex; align-items: center; gap: 9px; }
 .brand img { height: 25px; width: auto; }
 .brand-word { font-size: 19px; font-weight: 700; letter-spacing: -.01em; color: #fff; white-space: nowrap; }
