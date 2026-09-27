@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { AssemblyScroll, SortingScroll } from './reference-animations';
 import ReferenceInteractions from './reference-interactions';
+import ContactForm from './contact-form';
 
 export default function ReferenceContent() {
   return <main className="reference-site">
@@ -10,12 +11,10 @@ export default function ReferenceContent() {
 
 <header className="nav-wrap">
   <div className="container nav">
-    <a className="brand" href="#top"><img src="/design-reference/logo-icon.png" alt="" decoding="async" loading="lazy" /><span className="brand-word">Cloth Scanner</span></a>
+    <a className="brand brand-aai" href="#top"><img src="/design-reference/aai-logo-primary.svg" alt="Advanced AI Lab" decoding="async" loading="lazy" /><span className="brand-divider" aria-hidden="true"></span><span className="brand-word">Cloth Scanner</span></a>
     <nav className="nav-links">
       <a href="#top" className="active">Overview</a>
       <a href="#specs">Specs</a>
-      <a href="#creator">Creator</a>
-      <a href="#blog">Blog</a>
       <a href="#contact">Contact</a>
     </nav>
     <a href="#contact" className="btn btn-teal nav-cta">Talk to Our Team</a>
@@ -51,6 +50,14 @@ export default function ReferenceContent() {
 
 <section className="problem">
   <div className="container">
+    <div className="savings">
+      <p className="savings-title">WHAT CLOTH SCANNER SAVES YOU</p>
+      <div className="savings-grid">
+        <article className="saving-card"><p className="saving-kicker">You save at least</p><p className="saving-value">$80k <span>a year</span></p><p className="saving-basis">If you ship $10 million a year</p></article>
+        <article className="saving-card"><p className="saving-kicker">You save at least</p><p className="saving-value">$400k <span>a year</span></p><p className="saving-basis">If you ship $50 million a year</p></article>
+        <article className="saving-card"><p className="saving-kicker">You save at least</p><p className="saving-value">$2M <span>a year</span></p><p className="saving-basis">If you ship $250 million a year</p></article>
+      </div>
+    </div>
     <h2 className="problem-head">Manual inspection has a blind spot.<br />What it misses kills your margin.</h2>
     <div className="problem-grid">
       <article className="prob-card">
@@ -406,13 +413,15 @@ export default function ReferenceContent() {
 </section>
 
 
-<footer id="contact" className="footer">
+<ContactForm />
+
+<footer className="footer">
   <div className="container footer-inner">
     <div className="footer-top">
       <div className="footer-brand" id="creator">
         <span className="footer-logo brand"><img src="/design-reference/logo-icon.png" alt="" decoding="async" loading="lazy" /><span className="brand-word">Cloth Scanner</span></span>
         <h3 className="serif-title footer-tag">Built in Bangladesh. Serviced in Bangladesh.</h3>
-        <p className="footer-desc">This is a product of Advanced AI Lab, the AI business of ACI PLC. Every cell is designed, assembled, and serviced within a day&apos;s drive of your factory. No imported machine, no expatriate service call, no six-week wait for spare parts.</p>
+        <p className="footer-desc">This is a product of Advanced AI Lab Limited. Every cell is designed, assembled, and serviced within a day&apos;s drive of your factory. No imported machine, no expatriate service call, no six-week wait for spare parts.</p>
       </div>
       <div className="footer-cols">
         <div className="fcol">
@@ -420,7 +429,7 @@ export default function ReferenceContent() {
           <a href="#top">The Cell</a>
           <a href="#works">The Machine</a>
           <a href="#model">The Model</a>
-          <a href="#works">See In 3D</a>
+          <a href="#works">The Robot in 3D</a>
           <a href="#buy">How To Buy It</a>
         </div>
         <div className="fcol">
@@ -431,8 +440,7 @@ export default function ReferenceContent() {
         </div>
         <div className="fcol">
           <p className="fcol-head">Contact</p>
-          <a href="mailto:clothscanner@advanceailab.com">clothscanner@advanceailab.com</a>
-          <a href="tel:+8801234567890">(+880) 1234-567890</a>
+          <a href="mailto:arifin@advanced-ai-lab.com">arifin@advanced-ai-lab.com</a>
           <div className="socials">
             <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0zM.5 8h4V24h-4V8zM8 8h3.8v2.2h.05c.53-1 1.83-2.2 3.77-2.2 4.03 0 4.78 2.65 4.78 6.1V24h-4v-7.1c0-1.7-.03-3.9-2.38-3.9-2.38 0-2.75 1.86-2.75 3.78V24H8V8z" /></svg></a>
             <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.2 3.6-6.2 3.6z" /></svg></a>
@@ -443,8 +451,8 @@ export default function ReferenceContent() {
       </div>
     </div>
     <div className="footer-bottom">
-      <span>&copy; 2026 ADVANCED AI LAB LIMITED &middot; ACI PLC</span>
-      <img className="aal-logo" src="/design-reference/de1aa54b45d2.png" alt="Advanced AI Lab Limited" />
+      <span>&copy; 2026 ADVANCED AI LAB LIMITED</span>
+      <img className="aal-logo" src="/design-reference/aai-logo-primary.svg" alt="Advanced AI Lab Limited" />
     </div>
   </div>
 </footer>

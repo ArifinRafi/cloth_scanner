@@ -55,7 +55,7 @@ body = body
   .replace('Manual inspection gets harder to sustain across a full shift. Missed defects move down the line&mdash;and become harder to fix.', 'At factory scale, thousands of panels move between teams every hour. More output demands more inspection capacity and coordination.');
 // The linked reference updates the old raster wordmark to the finalized name.
 body = body.replace(/<a class="brand" href="#top"><img[^>]*\/><\/a>/,
-  '<a class="brand" href="#top"><img src="/design-reference/logo-icon.png" alt="" /><span class="brand-word">Cloth Scanner</span></a>')
+  '<a class="brand brand-aai" href="#top"><img src="/design-reference/aai-logo-primary.svg" alt="Advanced AI Lab" /><span class="brand-divider" aria-hidden="true"></span><span class="brand-word">Cloth Scanner</span></a>')
   .replace(/<img class="footer-logo"[^>]*\/>/,
     '<span class="footer-logo brand"><img src="/design-reference/logo-icon.png" alt="" /><span class="brand-word">Cloth Scanner</span></span>');
 body = body.replace('<section class="model">', '<section class="model" id="model">')
@@ -63,7 +63,25 @@ body = body.replace('<section class="model">', '<section class="model" id="model
   .replace('<div class="footer-brand">', '<div class="footer-brand" id="creator">')
   .replace('<a href="#">The Cell</a>', '<a href="#top">The Cell</a>')
   .replace('<a href="#">The Machine</a>', '<a href="#works">The Machine</a>')
-  .replace('<a href="#">The Model</a>', '<a href="#model">The Model</a>');
+  .replace('<a href="#">The Model</a>', '<a href="#model">The Model</a>')
+  .replace(/\s*<a href="#creator">Creator<\/a>/, '')
+  .replace(/\s*<a href="#blog">Blog<\/a>/, '')
+  .replace('<section class="problem">\n  <div class="container">', `<section class="problem">
+  <div class="container">
+    <div class="savings">
+      <p class="savings-title">WHAT CLOTH SCANNER SAVES YOU</p>
+      <div class="savings-grid">
+        <article class="saving-card"><p class="saving-kicker">You save at least</p><p class="saving-value">$80k <span>a year</span></p><p class="saving-basis">If you ship $10 million a year</p></article>
+        <article class="saving-card"><p class="saving-kicker">You save at least</p><p class="saving-value">$400k <span>a year</span></p><p class="saving-basis">If you ship $50 million a year</p></article>
+        <article class="saving-card"><p class="saving-kicker">You save at least</p><p class="saving-value">$2M <span>a year</span></p><p class="saving-basis">If you ship $250 million a year</p></article>
+      </div>
+    </div>`)
+  .replace('This is a product of Advanced AI Lab, the AI business of ACI PLC.', 'This is a product of Advanced AI Lab Limited.')
+  .replace('&copy; 2026 ADVANCED AI LAB LIMITED &middot; ACI PLC', '&copy; 2026 ADVANCED AI LAB LIMITED')
+  .replace(/<img class="aal-logo"[^>]*\/>/, '<img class="aal-logo" src="/design-reference/aai-logo-primary.svg" alt="Advanced AI Lab Limited" />')
+  .replace('<footer id="contact" class="footer">', '<ContactForm />\n\n<footer class="footer">')
+  .replace('<a href="mailto:clothscanner@advanceailab.com">clothscanner@advanceailab.com</a>', '<a href="mailto:arifin@advanced-ai-lab.com">arifin@advanced-ai-lab.com</a>')
+  .replace(/\s*<a href="tel:\+8801234567890">\(\+880\) 1234-567890<\/a>/, '');
 body = body.replace(/>([^<>]*)</g, (_, text) => `>${text.replaceAll("'", '&apos;')}<`);
 const voidTags = new Set(['img', 'br', 'hr', 'input', 'meta', 'link']);
 const camel = value => value.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
@@ -88,7 +106,7 @@ body = body.replace(/<([a-zA-Z][\w:-]*)(\s[^<>]*?)?\s*\/?>/g, (tag, name, attrib
   }
   return `<${name}${attrs.length ? ' ' + attrs.join(' ') : ''}${voidTags.has(name) || /\/>$/.test(tag) ? ' /' : ''}>`;
 });
-const jsx = `/* Generated from the supplied HTML; layout, copy, SVGs and asset pixels are preserved. */\n/* eslint-disable @next/next/no-img-element */\nimport { AssemblyScroll, SortingScroll } from './reference-animations';\nimport ReferenceInteractions from './reference-interactions';\n\nexport default function ReferenceContent() {\n  return <main className="reference-site">\n${body}\n<ReferenceInteractions />\n</main>;\n}\n`;
+const jsx = `/* Generated from the supplied HTML; layout, copy, SVGs and asset pixels are preserved. */\n/* eslint-disable @next/next/no-img-element */\nimport { AssemblyScroll, SortingScroll } from './reference-animations';\nimport ReferenceInteractions from './reference-interactions';\nimport ContactForm from './contact-form';\n\nexport default function ReferenceContent() {\n  return <main className="reference-site">\n${body}\n<ReferenceInteractions />\n</main>;\n}\n`;
 parse(jsx, { sourceType: 'module', plugins: ['jsx', 'typescript'] });
 fs.writeFileSync(path.join(root, 'app/reference-content.tsx'), jsx);
 fs.writeFileSync(path.join(root, 'app/reference.css'), css);
