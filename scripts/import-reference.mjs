@@ -35,12 +35,6 @@ body = body.slice(0, worksStart) + '    <SortingScroll />\n\n' + body.slice(spec
 body = body.replaceAll('ClothScannerAI', 'Cloth Scanner');
 body = body
   .replace(/\s*<div class="hero-accuracy">[\s\S]*?<\/div>\s*(?=<\/div>\s*<div class="container hero-stats">)/, '')
-  .replace('~$10.53M', '1 in 3')
-  .replace('Saved every year, per factory.', "Shipments fail the buyer's AQL check at today's defect rate.")
-  .replace('&lt;3s', '3 <span class="stat-unit">SEC</span>')
-  .replace('Grades each panel before the next one arrives.', 'Under three seconds to grade a panel, front and back.')
-  .replace('5 &rarr; 0.5', '4 <span class="stat-arrow">➜</span> 0.5')
-  .replace('Inspectors per table. Redeployed, not replaced.', 'Inspectors per table, once the cell is running.')
   .replace('/design-reference/2033d0bfb6f1.jpg', '/design-reference/manual-panel-checking.jpg')
   .replace('Garment finishing quality inspection', 'Workers manually checking and tagging stacks of cut garment panels')
   .replace('Rising Payroll Overhead', 'Every Panel, Checked by Hand')
@@ -66,16 +60,17 @@ body = body.replace('<section class="model">', '<section class="model" id="model
   .replace('<a href="#">The Model</a>', '<a href="#model">The Model</a>')
   .replace(/\s*<a href="#creator">Creator<\/a>/, '')
   .replace(/\s*<a href="#blog">Blog<\/a>/, '')
-  .replace('<section class="problem">\n  <div class="container">', `<section class="problem">
-  <div class="container">
+  .replace(/<div class="container hero-stats">[\s\S]*?(?=<\/section>)/, `<div class="container hero-savings" aria-labelledby="savings-title">
     <div class="savings">
-      <p class="savings-title">WHAT CLOTH SCANNER SAVES YOU</p>
+      <h2 class="savings-title" id="savings-title">WHAT CLOTH SCANNER SAVES YOU</h2>
       <div class="savings-grid">
         <article class="saving-card"><p class="saving-kicker">You save at least</p><p class="saving-value">$80k <span>a year</span></p><p class="saving-basis">If you ship $10 million a year</p></article>
         <article class="saving-card"><p class="saving-kicker">You save at least</p><p class="saving-value">$400k <span>a year</span></p><p class="saving-basis">If you ship $50 million a year</p></article>
         <article class="saving-card"><p class="saving-kicker">You save at least</p><p class="saving-value">$2M <span>a year</span></p><p class="saving-basis">If you ship $250 million a year</p></article>
       </div>
-    </div>`)
+    </div>
+  </div>
+`)
   .replace('This is a product of Advanced AI Lab, the AI business of ACI PLC.', 'This is a product of Advanced AI Lab Limited.')
   .replace('&copy; 2026 ADVANCED AI LAB LIMITED &middot; ACI PLC', '&copy; 2026 ADVANCED AI LAB LIMITED')
   .replace(/<img class="aal-logo"[^>]*\/>/, '<img class="aal-logo" src="/design-reference/aai-logo-primary.svg" alt="Advanced AI Lab Limited" />')

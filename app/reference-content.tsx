@@ -31,33 +31,20 @@ export default function ReferenceContent() {
       <a href="#contact" className="btn btn-teal">Talk to Our Team</a>
       <a href="#works" className="btn btn-outline">Explore Interactive 3D</a>
     </div></div>
-  <div className="container hero-stats">
-    <div className="stat">
-      <div className="stat-num">1 in 3</div>
-      <div className="stat-label">Shipments fail the buyer&apos;s AQL check at today&apos;s defect rate.</div>
-    </div>
-    <div className="stat">
-      <div className="stat-num">3 <span className="stat-unit">SEC</span></div>
-      <div className="stat-label">Under three seconds to grade a panel, front and back.</div>
-    </div>
-    <div className="stat">
-      <div className="stat-num">4 <span className="stat-arrow">➜</span> 0.5</div>
-      <div className="stat-label">Inspectors per table, once the cell is running.</div>
-    </div>
-  </div>
-</section>
-
-
-<section className="problem">
-  <div className="container">
+  <div className="container hero-savings" aria-labelledby="savings-title">
     <div className="savings">
-      <p className="savings-title">WHAT CLOTH SCANNER SAVES YOU</p>
+      <h2 className="savings-title" id="savings-title">WHAT CLOTH SCANNER SAVES YOU</h2>
       <div className="savings-grid">
         <article className="saving-card"><p className="saving-kicker">You save at least</p><p className="saving-value">$80k <span>a year</span></p><p className="saving-basis">If you ship $10 million a year</p></article>
         <article className="saving-card"><p className="saving-kicker">You save at least</p><p className="saving-value">$400k <span>a year</span></p><p className="saving-basis">If you ship $50 million a year</p></article>
         <article className="saving-card"><p className="saving-kicker">You save at least</p><p className="saving-value">$2M <span>a year</span></p><p className="saving-basis">If you ship $250 million a year</p></article>
       </div>
     </div>
+  </div>
+</section>
+
+<section className="problem">
+  <div className="container">
     <h2 className="problem-head">Manual inspection has a blind spot.<br />What it misses kills your margin.</h2>
     <div className="problem-grid">
       <article className="prob-card">
