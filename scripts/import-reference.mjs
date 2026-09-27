@@ -80,7 +80,7 @@ body = body.replace('<section class="model">', '<section class="model" id="model
   .replace('&copy; 2026 ADVANCED AI LAB LIMITED &middot; ACI PLC', '&copy; 2026 ADVANCED AI LAB LIMITED')
   .replace(/<img class="aal-logo"[^>]*\/>/, '<img class="aal-logo" src="/design-reference/aai-logo-primary.svg" alt="Advanced AI Lab Limited" />')
   .replace('<footer id="contact" class="footer">', '<ContactForm />\n\n<footer class="footer">')
-  .replace('<a href="mailto:clothscanner@advanceailab.com">clothscanner@advanceailab.com</a>', '<a href="mailto:arifin@advanced-ai-lab.com">arifin@advanced-ai-lab.com</a>')
+  .replace('<a href="mailto:clothscanner@advanceailab.com">clothscanner@advanceailab.com</a>', '<a href="mailto:clothscanner@advanced-ai-lab.com">clothscanner@advanced-ai-lab.com</a>')
   .replace(/\s*<a href="tel:\+8801234567890">\(\+880\) 1234-567890<\/a>/, '');
 body = body.replace(/>([^<>]*)</g, (_, text) => `>${text.replaceAll("'", '&apos;')}<`);
 const voidTags = new Set(['img', 'br', 'hr', 'input', 'meta', 'link']);

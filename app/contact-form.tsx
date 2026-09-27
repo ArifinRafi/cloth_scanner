@@ -41,9 +41,9 @@ export default function ContactForm() {
           <p className="eyebrow">CONTACT</p>
           <h2 id="contact-title">Let&apos;s talk about your production line.</h2>
           <p>Tell us where manual inspection is slowing you down. Your message will go directly to the Cloth Scanner team.</p>
-          <a className="contact-direct" href="mailto:arifin@advanced-ai-lab.com">
+          <a className="contact-direct" href="mailto:clothscanner@advanced-ai-lab.com">
             <span>Email us directly</span>
-            <strong>arifin@advanced-ai-lab.com</strong>
+            <strong>clothscanner@advanced-ai-lab.com</strong>
           </a>
         </div>
 
@@ -81,7 +81,7 @@ export default function ContactForm() {
           <div className="contact-info" aria-label="Contact information">
             <div><span>Company</span><strong>Advanced AI Lab Limited</strong></div>
             <div><span>Product</span><strong>Cloth Scanner</strong></div>
-            <div><span>Email</span><a href="mailto:arifin@advanced-ai-lab.com">arifin@advanced-ai-lab.com</a></div>
+            <div><span>Email</span><a href="mailto:clothscanner@advanced-ai-lab.com">clothscanner@advanced-ai-lab.com</a></div>
           </div>
         </div>
       </div>

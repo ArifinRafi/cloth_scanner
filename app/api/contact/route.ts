@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';
 
-const recipient = 'arifin@advanced-ai-lab.com';
+const recipient = 'clothscanner@advanced-ai-lab.com';
 
 function field(value: unknown, limit: number) {
   return typeof value === 'string' ? value.trim().slice(0, limit) : '';
