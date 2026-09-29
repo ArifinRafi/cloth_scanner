@@ -27,12 +27,15 @@ let body = source.match(/<body>([\s\S]*?)<\/body>/)[1];
 body = body.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, '').replace(/<!--[\s\S]*?-->/g, '');
 if (/\son\w+=|javascript:/i.test(body)) throw new Error('Unexpected executable HTML attribute.');
 body = body.replace(/<img class="hero-machine"[^>]*\/>/, '<AssemblyScroll />');
+body = body.replace('<nav class="nav-links">', '<nav class="nav-links" aria-label="Main navigation">')
+  .replace('</nav>\n    <a href="#contact" class="btn btn-teal nav-cta">', '</nav>\n    <MobileMenu />\n    <a href="#contact" class="btn btn-teal nav-cta">');
 const worksStart = body.indexOf('    <div class="works-stage">');
 const specsStart = body.indexOf('    <div class="specs"');
 if (worksStart < 0 || specsStart < worksStart) throw new Error('Reference animation slot missing.');
 body = body.slice(0, worksStart) + '    <SortingScroll />\n\n' + body.slice(specsStart);
 // Keep the product name already finalized for this app, also used by the linked reference.
 body = body.replaceAll('ClothScannerAI', 'Cloth Scanner');
+body = body.replace('our<br>Cloth Scanner.', 'our<br> Cloth Scanner.');
 body = body
   .replace(/\s*<div class="hero-accuracy">[\s\S]*?<\/div>\s*(?=<\/div>\s*<div class="container hero-stats">)/, '')
   .replace('/design-reference/2033d0bfb6f1.jpg', '/design-reference/manual-panel-checking.jpg')
@@ -101,7 +104,7 @@ body = body.replace(/<([a-zA-Z][\w:-]*)(\s[^<>]*?)?\s*\/?>/g, (tag, name, attrib
   }
   return `<${name}${attrs.length ? ' ' + attrs.join(' ') : ''}${voidTags.has(name) || /\/>$/.test(tag) ? ' /' : ''}>`;
 });
-const jsx = `/* Generated from the supplied HTML; layout, copy, SVGs and asset pixels are preserved. */\n/* eslint-disable @next/next/no-img-element */\nimport { AssemblyScroll, SortingScroll } from './reference-animations';\nimport ReferenceInteractions from './reference-interactions';\nimport ContactForm from './contact-form';\n\nexport default function ReferenceContent() {\n  return <main className="reference-site">\n${body}\n<ReferenceInteractions />\n</main>;\n}\n`;
+const jsx = `/* Generated from the supplied HTML; layout, copy, SVGs and asset pixels are preserved. */\n/* eslint-disable @next/next/no-img-element */\nimport { AssemblyScroll, SortingScroll } from './reference-animations';\nimport ReferenceInteractions from './reference-interactions';\nimport ContactForm from './contact-form';\nimport MobileMenu from './mobile-menu';\n\nexport default function ReferenceContent() {\n  return <main className="reference-site">\n${body}\n<ReferenceInteractions />\n</main>;\n}\n`;
 parse(jsx, { sourceType: 'module', plugins: ['jsx', 'typescript'] });
 fs.writeFileSync(path.join(root, 'app/reference-content.tsx'), jsx);
 fs.writeFileSync(path.join(root, 'app/reference.css'), css);

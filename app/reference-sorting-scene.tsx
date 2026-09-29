@@ -10,7 +10,7 @@ function Camera({ progress }: { progress: RefObject<number> }) {
   const { camera, size } = useThree();
   useFrame(() => {
     const frame = sampleCamera(progress.current);
-    const fit = Math.max(1.08, 1.45 / (size.width / Math.max(1, size.height)));
+    const fit = Math.max(1.08, 1.75 / (size.width / Math.max(1, size.height)));
     camera.position.copy(frame.target).add(frame.position.sub(frame.target).multiplyScalar(fit));
     camera.lookAt(frame.target);
   });

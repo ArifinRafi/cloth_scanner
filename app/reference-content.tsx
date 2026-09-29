@@ -3,6 +3,7 @@
 import { AssemblyScroll, SortingScroll } from './reference-animations';
 import ReferenceInteractions from './reference-interactions';
 import ContactForm from './contact-form';
+import MobileMenu from './mobile-menu';
 
 export default function ReferenceContent() {
   return <main className="reference-site">
@@ -12,11 +13,12 @@ export default function ReferenceContent() {
 <header className="nav-wrap">
   <div className="container nav">
     <a className="brand brand-aai" href="#top"><img src="/design-reference/aai-logo-primary.svg" alt="Advanced AI Lab" decoding="async" loading="lazy" /><span className="brand-divider" aria-hidden="true"></span><span className="brand-word">Cloth Scanner</span></a>
-    <nav className="nav-links">
+    <nav className="nav-links" aria-label="Main navigation">
       <a href="#top" className="active">Overview</a>
       <a href="#specs">Specs</a>
       <a href="#contact">Contact</a>
     </nav>
+    <MobileMenu />
     <a href="#contact" className="btn btn-teal nav-cta">Talk to Our Team</a>
   </div>
 </header>
@@ -26,7 +28,7 @@ export default function ReferenceContent() {
   <AssemblyScroll />
   <div className="container hero-inner">
     <h1 className="hero-title">AI powered cut panel inspection<br />through robotic automation</h1>
-    <p className="hero-sub">A single rejected consignment costs more than a year of our<br />Cloth Scanner.</p>
+    <p className="hero-sub">A single rejected consignment costs more than a year of our<br /> Cloth Scanner.</p>
     <div className="hero-actions">
       <a href="#contact" className="btn btn-teal">Talk to Our Team</a>
       <a href="#works" className="btn btn-outline">Explore Interactive 3D</a>
