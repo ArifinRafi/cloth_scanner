@@ -75,12 +75,13 @@ export default function ContactForm() {
               <span>{state === 'sending' ? 'Sending inquiry…' : 'Send inquiry'}</span>
               <span aria-hidden="true">↗</span>
             </button>
+            <p className="contact-privacy-note">We use your details to respond to your inquiry. Read our <a href="/privacy">Privacy Statement</a>.</p>
             <p className={`contact-status ${state}`} role="status" aria-live="polite">{message}</p>
           </form>
 
           <div className="contact-info" aria-label="Contact information">
             <div><span>Company</span><strong>Advanced AI Lab Limited</strong></div>
-            <div><span>Product</span><strong>Cloth Scanner</strong></div>
+            <div><span>Phone</span><a href="tel:+8801314996600">+880 1314-996600</a></div>
             <div><span>Email</span><a href="mailto:clothscanner@advanced-ai-lab.com">clothscanner@advanced-ai-lab.com</a></div>
           </div>
         </div>

@@ -12,7 +12,7 @@ export default function ReferenceContent() {
 
 <header className="nav-wrap">
   <div className="container nav">
-    <a className="brand brand-aai" href="#top"><img src="/design-reference/aai-logo-primary.svg" alt="Advanced AI Lab" decoding="async" loading="lazy" /><span className="brand-divider" aria-hidden="true"></span><span className="brand-word">Cloth Scanner</span></a>
+    <a className="brand brand-aai" href="#top"><img src="/design-reference/aai-logo-final.svg" alt="Advanced AI Lab" decoding="async" loading="lazy" /><span className="brand-divider" aria-hidden="true"></span><span className="brand-word">Cloth Scanner</span></a>
     <nav className="nav-links" aria-label="Main navigation">
       <a href="#top" className="active">Overview</a>
       <a href="#specs">Specs</a>
@@ -29,18 +29,19 @@ export default function ReferenceContent() {
   <div className="container hero-inner">
     <h1 className="hero-title">AI powered cut panel inspection<br />through robotic automation</h1>
     <p className="hero-sub">A single rejected consignment costs more than a year of our<br /> Cloth Scanner.</p>
+    <div className="hero-partner">
+      <p>Co-built with the industry pioneer</p>
+      <span className="hero-partner-logo"><img src="/images/urmi-group-logo.png" alt="Urmi Group logo" width="120" height="51" decoding="async" /></span>
+    </div>
     <div className="hero-actions">
       <a href="#contact" className="btn btn-teal">Talk to Our Team</a>
       <a href="#works" className="btn btn-outline">Explore Interactive 3D</a>
     </div></div>
-  <div className="container hero-savings" aria-labelledby="savings-title">
-    <div className="savings">
-      <h2 className="savings-title" id="savings-title">WHAT CLOTH SCANNER SAVES YOU</h2>
-      <div className="savings-grid">
-        <article className="saving-card"><p className="saving-kicker">You save at least</p><p className="saving-value">$80k <span>a year</span></p><p className="saving-basis">If you ship $10 million a year</p></article>
-        <article className="saving-card"><p className="saving-kicker">You save at least</p><p className="saving-value">$400k <span>a year</span></p><p className="saving-basis">If you ship $50 million a year</p></article>
-        <article className="saving-card"><p className="saving-kicker">You save at least</p><p className="saving-value">$2M <span>a year</span></p><p className="saving-basis">If you ship $250 million a year</p></article>
-      </div>
+  <div className="container hero-impact" role="group" aria-label="Cloth Scanner performance highlights">
+    <div className="impact-grid">
+      <article className="impact-card"><p className="impact-value">4x Fewer</p><p className="impact-caption">Rejections at the buyer&apos;s AQL check.</p></article>
+      <article className="impact-card"><p className="impact-value">&lt;2<small>s</small></p><p className="impact-caption">Grades each panel before the next one arrives.</p></article>
+      <article className="impact-card"><p className="impact-value">4 <span className="impact-arrow" aria-label="to">→</span> 1</p><p className="impact-caption">Inspectors per two tables, once the cell is running.</p></article>
     </div>
   </div>
 </section>
@@ -415,10 +416,8 @@ export default function ReferenceContent() {
       <div className="footer-cols">
         <div className="fcol">
           <p className="fcol-head">Product</p>
-          <a href="#top">The Cell</a>
-          <a href="#works">The Machine</a>
+          <a href="#works">Machine in 3D</a>
           <a href="#model">The Model</a>
-          <a href="#works">The Robot in 3D</a>
           <a href="#buy">How To Buy It</a>
         </div>
         <div className="fcol">
@@ -426,9 +425,14 @@ export default function ReferenceContent() {
           <a href="#creator">About</a>
           <a href="#contact">Contact</a>
           <a href="#">AAI Website</a>
+          <div className="footer-privacy">
+            <p className="fcol-head">Privacy</p>
+            <a className="footer-privacy-link" href="/privacy">Privacy Statement <span aria-hidden="true">↗</span></a>
+          </div>
         </div>
         <div className="fcol">
           <p className="fcol-head">Contact</p>
+          <a href="tel:+8801314996600">+880 1314-996600</a>
           <a href="mailto:clothscanner@advanced-ai-lab.com">clothscanner@advanced-ai-lab.com</a>
           <div className="socials">
             <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0zM.5 8h4V24h-4V8zM8 8h3.8v2.2h.05c.53-1 1.83-2.2 3.77-2.2 4.03 0 4.78 2.65 4.78 6.1V24h-4v-7.1c0-1.7-.03-3.9-2.38-3.9-2.38 0-2.75 1.86-2.75 3.78V24H8V8z" /></svg></a>
@@ -441,7 +445,7 @@ export default function ReferenceContent() {
     </div>
     <div className="footer-bottom">
       <span>&copy; 2026 ADVANCED AI LAB LIMITED</span>
-      <img className="aal-logo" src="/design-reference/aai-logo-primary.svg" alt="Advanced AI Lab Limited" />
+      <img className="aal-logo" src="/design-reference/aai-logo-final.svg" alt="Advanced AI Lab Limited" />
     </div>
   </div>
 </footer>

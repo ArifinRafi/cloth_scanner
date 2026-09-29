@@ -52,34 +52,39 @@ body = body
   .replace('Manual inspection gets harder to sustain across a full shift. Missed defects move down the line&mdash;and become harder to fix.', 'At factory scale, thousands of panels move between teams every hour. More output demands more inspection capacity and coordination.');
 // The linked reference updates the old raster wordmark to the finalized name.
 body = body.replace(/<a class="brand" href="#top"><img[^>]*\/><\/a>/,
-  '<a class="brand brand-aai" href="#top"><img src="/design-reference/aai-logo-primary.svg" alt="Advanced AI Lab" /><span class="brand-divider" aria-hidden="true"></span><span class="brand-word">Cloth Scanner</span></a>')
+  '<a class="brand brand-aai" href="#top"><img src="/design-reference/aai-logo-final.svg" alt="Advanced AI Lab" /><span class="brand-divider" aria-hidden="true"></span><span class="brand-word">Cloth Scanner</span></a>')
   .replace(/<img class="footer-logo"[^>]*\/>/,
     '<span class="footer-logo brand"><img src="/design-reference/logo-icon.png" alt="" /><span class="brand-word">Cloth Scanner</span></span>');
 body = body.replace('<section class="model">', '<section class="model" id="model">')
   .replace('<section class="buy">', '<section class="buy" id="buy">')
   .replace('<div class="footer-brand">', '<div class="footer-brand" id="creator">')
-  .replace('<a href="#">The Cell</a>', '<a href="#top">The Cell</a>')
-  .replace('<a href="#">The Machine</a>', '<a href="#works">The Machine</a>')
-  .replace('<a href="#">The Model</a>', '<a href="#model">The Model</a>')
   .replace(/\s*<a href="#creator">Creator<\/a>/, '')
   .replace(/\s*<a href="#blog">Blog<\/a>/, '')
-  .replace(/<div class="container hero-stats">[\s\S]*?(?=<\/section>)/, `<div class="container hero-savings" aria-labelledby="savings-title">
-    <div class="savings">
-      <h2 class="savings-title" id="savings-title">WHAT CLOTH SCANNER SAVES YOU</h2>
-      <div class="savings-grid">
-        <article class="saving-card"><p class="saving-kicker">You save at least</p><p class="saving-value">$80k <span>a year</span></p><p class="saving-basis">If you ship $10 million a year</p></article>
-        <article class="saving-card"><p class="saving-kicker">You save at least</p><p class="saving-value">$400k <span>a year</span></p><p class="saving-basis">If you ship $50 million a year</p></article>
-        <article class="saving-card"><p class="saving-kicker">You save at least</p><p class="saving-value">$2M <span>a year</span></p><p class="saving-basis">If you ship $250 million a year</p></article>
-      </div>
+  .replace(/<div class="container hero-stats">[\s\S]*?(?=<\/section>)/, `<div class="container hero-impact" role="group" aria-label="Cloth Scanner performance highlights">
+    <div class="impact-grid">
+      <article class="impact-card"><p class="impact-value">4x Fewer</p><p class="impact-caption">Rejections at the buyer's AQL check.</p></article>
+      <article class="impact-card"><p class="impact-value">&lt;2<small>s</small></p><p class="impact-caption">Grades each panel before the next one arrives.</p></article>
+      <article class="impact-card"><p class="impact-value">4 <span class="impact-arrow" aria-label="to">→</span> 1</p><p class="impact-caption">Inspectors per two tables, once the cell is running.</p></article>
     </div>
   </div>
 `)
   .replace('This is a product of Advanced AI Lab, the AI business of ACI PLC.', 'This is a product of Advanced AI Lab Limited.')
   .replace('&copy; 2026 ADVANCED AI LAB LIMITED &middot; ACI PLC', '&copy; 2026 ADVANCED AI LAB LIMITED')
-  .replace(/<img class="aal-logo"[^>]*\/>/, '<img class="aal-logo" src="/design-reference/aai-logo-primary.svg" alt="Advanced AI Lab Limited" />')
+  .replace(/<img class="aal-logo"[^>]*\/>/, '<img class="aal-logo" src="/design-reference/aai-logo-final.svg" alt="Advanced AI Lab Limited" />')
+  .replace('<a href="#">AAI Website</a>', `<a href="#">AAI Website</a>
+          <div class="footer-privacy"><p class="fcol-head">Privacy</p><a class="footer-privacy-link" href="/privacy">Privacy Statement <span aria-hidden="true">↗</span></a></div>`)
   .replace('<footer id="contact" class="footer">', '<ContactForm />\n\n<footer class="footer">')
   .replace('<a href="mailto:clothscanner@advanceailab.com">clothscanner@advanceailab.com</a>', '<a href="mailto:clothscanner@advanced-ai-lab.com">clothscanner@advanced-ai-lab.com</a>')
   .replace(/\s*<a href="tel:\+8801234567890">\(\+880\) 1234-567890<\/a>/, '');
+body = body
+  .replace(/(<p class="hero-sub">[\s\S]*?<\/p>)/, `$1
+    <div class="hero-partner"><p>Co-built with the industry pioneer</p><span class="hero-partner-logo"><img src="/images/urmi-group-logo.png" alt="Urmi Group logo" width="120" height="51" /></span></div>`)
+  .replace(/(<p class="fcol-head">Product<\/p>)[\s\S]*?(?=<\/div>)/, `$1
+          <a href="#works">Machine in 3D</a>
+          <a href="#model">The Model</a>
+          <a href="#buy">How To Buy It</a>
+        `)
+  .replace('<p class="fcol-head">Contact</p>', '<p class="fcol-head">Contact</p>\n          <a href="tel:+8801314996600">+880 1314-996600</a>');
 body = body.replace(/>([^<>]*)</g, (_, text) => `>${text.replaceAll("'", '&apos;')}<`);
 const voidTags = new Set(['img', 'br', 'hr', 'input', 'meta', 'link']);
 const camel = value => value.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
